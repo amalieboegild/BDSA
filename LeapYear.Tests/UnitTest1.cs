@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using LeapYear;
+using System.IO;
 
 namespace LeapYear.Tests
 {
@@ -9,21 +10,16 @@ namespace LeapYear.Tests
         [Fact]
         public void TestDivisibleByFour()
         {
-            Assert.True(Program.IsLeapYear(8));
-            Assert.True(Program.IsLeapYear(4));
-            Assert.True(Program.IsLeapYear(0));
-            Assert.False(Program.IsLeapYear(13));
-            Assert.False(Program.IsLeapYear(18));
+            Assert.True(Program.IsLeapYear(1604));
+            Assert.False(Program.IsLeapYear(1700));
+            Assert.False(Program.IsLeapYear(1800));
         }
 
         [Fact]
         public void TestDivisibleByHundred()
         {
-            Assert.False(Program.IsLeapYear(200));
-            Assert.False(Program.IsLeapYear(100));
-            Assert.True(Program.IsLeapYear(0));
-            Assert.True(Program.IsLeapYear(16));
-            Assert.False(Program.IsLeapYear(1005));
+            Assert.True(Program.IsLeapYear(4000));
+            Assert.False(Program.IsLeapYear(1905));
         }
 
         [Fact]
@@ -31,8 +27,43 @@ namespace LeapYear.Tests
         {
             Assert.True(Program.IsLeapYear(2000));
             Assert.True(Program.IsLeapYear(1600));
-            Assert.False(Program.IsLeapYear(200));
             Assert.False(Program.IsLeapYear(1800));
+        }
+
+        [Fact]
+        public void TestUserArgument()
+        {
+            Assert.Throws<ArgumentException>(() => Program.IsLeapYear(100));
+            Assert.Throws<ArgumentException>(() => Program.IsLeapYear(0));
+            Assert.Throws<ArgumentException>(() => Program.IsLeapYear(-400));
+        }
+
+        [Fact]
+        public void TestMainPrintsYay()
+        {
+            var writer = new StringWriter();
+            Console.SetOut(writer);
+
+            var stdIn = new StringReader("2000\r\n");
+            Console.SetIn(stdIn);
+            Program.Main(new string[0]);
+            var output = writer.GetStringBuilder().ToString().Trim();
+    
+            Assert.Equal("Type in a year\nyay", output);
+        }
+
+        [Fact]
+        public void TestMainPrintsNay()
+        {
+            var writer = new StringWriter();
+            Console.SetOut(writer);
+
+            var stdIn = new StringReader("1999\r\n");
+            Console.SetIn(stdIn);
+            Program.Main(new string[0]);
+            var output = writer.GetStringBuilder().ToString().Trim();
+    
+            Assert.Equal("Type in a year\nnay", output);
         }
     }
 }
