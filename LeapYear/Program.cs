@@ -4,6 +4,19 @@ namespace LeapYear
 {
     public class Program
     {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Type in a year");
+            string reader = Console.ReadLine();
+            int input = int.Parse(reader);
+            if (IsLeapYear(input))
+            {
+                System.Console.WriteLine("yay");
+            } else {
+                System.Console.WriteLine("nay");
+            }
+        }
+
         public static bool IsLeapYear(int year)
         {
             if (year % 4 == 0)
@@ -20,12 +33,6 @@ namespace LeapYear
             }
             return false;
         }
-        static void Main(string[] args)
-        {
-            System.Console.WriteLine("Indtast år");
-            string reader = Console.ReadLine();
-            int input = int.Parse(reader);
-            IsLeapYear(input);
-        }
+        
     }
 }
